@@ -2,7 +2,7 @@ var express = require("express");
 var body = require ("body-parser");
 var path = require("path");
 var ejs = require("ejs");
-
+var db = require("./models");
 
 var app = express();
 var views = path.join(__dirname,"views");
