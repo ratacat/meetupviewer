@@ -42,3 +42,23 @@ userSchema.statics.checkPswrd = function(password,cb) {
 			}
 		});
 };
+
+userSchema.statics.createSecure = function(params,cb) {
+	var isConfirmed;
+
+	isConfirmed = confirm(params.password,params.password_confirmation);
+
+	if (!isConfirmed) {
+		return cb("Password should Match", null);
+	}
+
+	var that = this;
+
+	bcrypt.hash(params.password,12,function(err,hash) {
+		params.password_digest = hash;
+		that.create(params,cb);
+	});
+};
+
+var User = mongoose.model("User",userSchema);
+module.exports = User;
