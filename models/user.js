@@ -21,14 +21,20 @@ var userSchema = new mongoose.Schema({
 });
 
 userSchema.statics.authenticate = function(params,cb) {
+	console.log(params);
 	this.findOne({
 		email: params.email
-	}, function(err, user) {
-		user.checkPswrd(params.password,cb);
-	});
+	}, function(err, user){
+      if (user === null){
+        throw new Error("Username does not exist");
+      } else if (user.checkPassword(params.password, cb)){
+        cb(null, user);
+      }
+
+    })
 };
 
-userSchema.statics.checkPswrd = function(password,cb) {
+userSchema.methods.checkPassword = function(password,cb) {
 	var user = this;
 	bcrypt.compare(password,
 		this.passwordDigest, function(err, isMatch) {
