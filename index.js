@@ -26,6 +26,7 @@ app.post("/users",function(req,res) {
 		if (user) {
 			res.send(user);
 		} else {
+			console.log(err);
 			res.redirect("/signup");
 		}
 	});

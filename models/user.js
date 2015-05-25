@@ -1,6 +1,10 @@
 var mongoose = require("mongoose");
 var bcrypt = require("bcrypt");
 
+var confirm = function (pswrd, pswrdCon) {
+	return pswrd === pswrdCon;
+};
+
 var userSchema = new mongoose.Schema({
 	email: {
 		type: String,
@@ -14,13 +18,6 @@ var userSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	userName: {
-		type: String,
-		required: true,
-		index: {
-			unique: true
-		}
-	}
 });
 
 userSchema.statics.authenticate = function(params,cb) {
@@ -56,7 +53,10 @@ userSchema.statics.createSecure = function(params,cb) {
 
 	bcrypt.hash(params.password,12,function(err,hash) {
 		params.password_digest = hash;
-		that.create(params,cb);
+		that.create({
+			email: params.email,
+			passwordDigest: params.password_digest
+		}, cb);
 	});
 };
 
