@@ -31,11 +31,19 @@ var buildOneEvent = function(oldEvent) {
 	var seconds = "0" + date.getSeconds();
 	newEvent.time = hours + ':' + minutes.substr(minutes.length-2) + ':' + seconds.substr(seconds.length-2);
 
+	//time clean
+	newEvent.time = date.toString("h:mm tt").toLowerCase();
+
+
 	//url
 	newEvent.url = oldEvent.event_url;
 
 	//city
 	newEvent.city = oldEvent.hasOwnProperty("venue") ? oldEvent.venue.city : "----------";
+
+	//group
+	newEvent.groupId = oldEvent.group.id;
+	newEvent.groupName = oldEvent.group.name;
 
 	//date
 	newEvent.date = weekdays[date.getDay()] + " " + date.getDate();
@@ -103,5 +111,6 @@ var q = base +
 "&page=" + page +
 "&key=" + key;
 
+module.exports.oldData = data;
 module.exports.data = newData;
 module.exports.query = q;
