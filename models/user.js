@@ -18,6 +18,9 @@ var userSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+	groups: [{
+		type: String
+	}]
 });
 
 userSchema.statics.authenticate = function(params,cb) {
