@@ -2,6 +2,7 @@ var express = require("express");
 var body = require ("body-parser");
 var path = require("path");
 var ejs = require("ejs");
+require("datejs");
 var db = require("./models");
 var session = require("express-session");
 var api = require("./api.js");
@@ -36,7 +37,7 @@ app.use ("/",function(req,res,next) {
       function (err, user) {
         req.user = user;
         cb(null, user);
-      })
+      });
   };
 
   req.logout = function () {
@@ -44,11 +45,29 @@ app.use ("/",function(req,res,next) {
     req.user = null;
   }
 
+ //  if (!req.currentUser){
+	// 	res.redirect("/login");
+	// }
+
+	//console.log(JSON.stringify(req));
+	req.currentUser(function(err,user) {
+		//req.currentSessionUser = user;
+		//console.log
+		//console.log("currentUser:"+user);
+		//console.log("error:"+err);
+		//console.log("req.session:"+JSON.stringify(req.session));
+	});
+
 next();
 	// var homePath = path.join(views, "home.ejs");
 	// console.log(homePath);
 	// res.render(homePath);
 });
+
+app.get("/", function(req,res) {
+	// if (req.session.userId) {
+		res.redirect("/viewer");
+})
 
 app.get("/signup", function(req,res) {
 	var signedupPath = path.join(views, "signup.ejs");
@@ -59,7 +78,7 @@ app.post("/users",function(req,res) {
 	var newUser = req.body.user;
 	db.User.createSecure(newUser,function(err,user) {
 		if (user) {
-			res.send(user);
+			res.redirect("/");
 		} else {
 			console.log(err);
 			res.redirect("/signup");
@@ -79,7 +98,8 @@ app.post("/login", function(req,res) {
 	db.User.authenticate(user, function(err,user) {
 		//console.log(user + "logging in");
 		req.login(user);
-		res.send(user + "<br>" + "has logged in!");
+		//res.send(user + "<br>" + "has logged in!");
+		res.redirect("/viewer");
 	});
 });
 
