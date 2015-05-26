@@ -3,12 +3,41 @@ label.signup {
 	display:inline-block;
 }
 
+body {
+	background-color:#e8e8e8;
+}
+
+#eventsContainer {
+	background-color:#f2f2f2;
+	width:850px;
+	margin:0 auto;
+	padding:10px;
+	border: 1px solid #DDD;
+	border-radius:2px;
+}
+
+a {
+	text-decoration: none;
+	color: #5292f2;
+}
+
+a:visited {
+	text-decoration: none;
+	color: #b97dd1;
+}
+
+a:hover {
+	text-decoration: none;
+	color: #000;
+}
+
 input {
 	border-radius:2px;
 }
 
 div.event div {
 	display:inline-block;
+	padding:1px;
 }
 
 div.event .city {
