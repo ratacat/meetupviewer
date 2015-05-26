@@ -3,12 +3,17 @@ var body = require ("body-parser");
 var path = require("path");
 var ejs = require("ejs");
 var db = require("./models");
-var session = require('express-session');
+var session = require("express-session");
+var api = require("./api.js");
+var _ = require("underscore");
 
 var app = express();
 var views = path.join(__dirname,"views");
+//app.set("view engine", "ejs");  
 
 app.use(express.static(path.join(process.cwd(),'public')));
+app.use(express.static(path.join(process.cwd(),'bower_components')));
+
 app.use(body.urlencoded({extended: true}));
 app.use(session({
 	secret: 'super secret',
@@ -79,9 +84,13 @@ app.post("/login", function(req,res) {
 });
 
 app.get("/viewer",function(req,res) {
-	var viewerPath = path.join(views, "viewer.ejs");
-	res.render(viewerPath);
-})
+	var viewerPath = path.join(views, "viewer.html");
+	res.sendFile(viewerPath);
+});
+
+app.get("/events", function(req,res) {
+	res.send(api.data);
+});
 
 app.listen(3000,function() {
 	console.log('express is');
