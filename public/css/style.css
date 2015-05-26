@@ -6,3 +6,19 @@ label.signup {
 input {
 	border-radius:2px;
 }
+
+div.event div {
+	display:inline-block;
+}
+
+div.event .city {
+	width:70px;
+}
+
+div.event .date {
+	width:60px;
+}
+
+div.event .time {
+	width:80px;
+}
