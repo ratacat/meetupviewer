@@ -1,11 +1,9 @@
 var REPL = require("repl");
-var api = require("./index.js");
-var data = require("./data.json");
+var api = require("./api.js");
 
 
 var repl = REPL.start("api > ");
 repl.context.api = api;
-repl.context.data = data;
 
 repl.on("exit", function () {
   console.log("GOODBYE!!");
