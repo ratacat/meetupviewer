@@ -53,6 +53,11 @@ div.event .time {
 	text-align:center;
 }
 
+div.event .follow {
+	border-radius:2px;
+	border: 1px solid #f2f2f2;
+}
+
 div.event .follow:not(.followed) {
 	cursor:pointer;
 }

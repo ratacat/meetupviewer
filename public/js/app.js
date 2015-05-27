@@ -8,8 +8,11 @@ function sendFollow(event) {
 	$.ajax({
 		url: "/follow/" + groupId,
 		type: "POST",
-		success: function(res) {
-			console.log("sendFollow callback success! ::"+res);
+		success: function(data,status) {
+			console.log("ajax-data:"+data);
+			console.log("ajax-status:"+status);
+			//lets rerender everything?
+			render("eventTemplate","eventsContainer");
 		}
 	});
 }
@@ -17,10 +20,6 @@ function sendFollow(event) {
 //renders all templates and appends them inside targetId element
 function render(templateId,targetId) {
 	var groups,followed;
-	//console.log("render init");
-	// $.get("/follows").done(function(uGroups) {
-	// 	groups = uGroups;
-	// });
 
 	//get json and build template view
     $.get('/events').done(function(events) {
@@ -32,7 +31,7 @@ function render(templateId,targetId) {
 	           // console.log(template);
 	           //first key in object sets the variable in the template
 	           //console.log("event: " + event);
-	           console.log("event.groupId: "+ event.groupId);
+	           //console.log("event.groupId: "+ event.groupId);
 	           if (groups.indexOf(event.groupId) > 0) {followed = 'followed'} else {followed=''}
 	            $("#" + targetId).append(template({event: event,f: followed}));
 	        });

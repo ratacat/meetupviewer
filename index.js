@@ -23,6 +23,7 @@ app.use(session({
 }));
 
 app.use ("/",function(req,res,next) {
+req.session.userId = "5563629ce53b73e15f2b51ba";
 
   req.login = function (user) {
     req.session.userId = user._id;
@@ -110,13 +111,18 @@ app.get("/viewer",function(req,res) {
 
 app.post("/follow/:groupId", function(req,res) {
 	req.currentUser(function(err,user) {
-		console.log("currentUser err:" + err);
+		console.log("currentUser:" + user);
 		//console.log("user:" + user);
-		user.follow(req.params.groupId,
-			function(err,groups) {
-				console.log("user.follow called back");
-				res.sendStatus(201,groups);
-		});
+		if (user) {
+			user.follow(req.params.groupId,
+				function(err,groups) {
+					console.log("POST /follow/:"+req.params.groupId + "  :"+user.email);
+					res.sendStatus(201,groups);
+			});
+		} else {
+			console.log("POST /follow/:"+req.params.groupId + "  :no user");
+			res.sendStatus(201,[]);
+		}
 	});
 });
 
