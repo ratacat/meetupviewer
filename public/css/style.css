@@ -37,7 +37,7 @@ input {
 
 div.event div {
 	display:inline-block;
-	padding:1px;
+	margin:1px;
 }
 
 div.event .city {
@@ -49,5 +49,16 @@ div.event .date {
 }
 
 div.event .time {
-	width:80px;
+	width:70px;
+	text-align:center;
+}
+
+div.event .follow:not(.followed) {
+	cursor:pointer;
+}
+
+div.event .followed {
+	background-color:#9be096;
+	border-radius:2px;
+	border: 1px solid #54a84d;
 }
