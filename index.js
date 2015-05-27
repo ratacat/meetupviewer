@@ -108,6 +108,37 @@ app.get("/viewer",function(req,res) {
 	res.sendFile(viewerPath);
 });
 
+app.post("/follow/:groupId", function(req,res) {
+	req.currentUser(function(err,user) {
+		console.log("currentUser err:" + err);
+		//console.log("user:" + user);
+		user.follow(req.params.groupId,
+			function(err,groups) {
+				console.log("user.follow called back");
+				res.sendStatus(201,groups);
+		});
+	});
+});
+
+app.get("/follows", function(req,res) {
+	req.currentUser(function(err,user) {
+		//console.log("user:" + user);
+		if (user) {
+			db.User.getFollows(req.session.userId,function(err,follows) {
+				if (!err) {res.send(JSON.stringify(follows))
+				} else {
+					console.log(err);
+				}
+			});
+			// user.follow('',function(err,groups) {
+			// 		res.send(JSON.stringify(groups));
+		
+		} else {
+			res.send("[]");
+		}
+	});
+});
+
 app.get("/events", function(req,res) {
 	res.send(api.data);
 });
