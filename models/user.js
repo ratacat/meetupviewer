@@ -37,18 +37,6 @@ userSchema.statics.authenticate = function(params,cb) {
     })
 };
 
-userSchema.methods.checkPassword = function(password,cb) {
-	var user = this;
-	bcrypt.compare(password,
-		this.passwordDigest, function(err, isMatch) {
-			if (isMatch) {
-				cb(null,user);
-			} else {
-				cb("oops", null);
-			}
-		});
-};
-
 userSchema.statics.createSecure = function(params,cb) {
 	var isConfirmed;
 
@@ -68,6 +56,43 @@ userSchema.statics.createSecure = function(params,cb) {
 		}, cb);
 	});
 };
+
+userSchema.statics.getFollows = function(userId,cb) {
+	this.findOne({ _id: userId}, function(err,user) {
+		if (err) {
+			cb(err,null);
+		} else {
+			cb(null,user.groups);
+		}
+	});
+}
+
+userSchema.methods.checkPassword = function(password,cb) {
+	var user = this;
+	bcrypt.compare(password,
+		this.passwordDigest, function(err, isMatch) {
+			if (isMatch) {
+				cb(null,user);
+			} else {
+				cb("oops", null);
+			}
+		});
+};
+
+userSchema.methods.follow = function(groupId,cb) {
+	//console.log("follow-this:  "+JSON.stringify(this));
+	console.log(typeof groupId);
+	if (typeof groupId === 'string') {
+		console.log("group id is string");
+		this.groups.push(groupId);
+		this.save(function(err) {
+			console.log("mongodb callback on this.save, err is:"+err);
+			cb(err,this.groups);
+			// if (err) return handleError(err)
+			// console.log("success!");
+		});
+	}
+}
 
 var User = mongoose.model("User",userSchema);
 module.exports = User;
