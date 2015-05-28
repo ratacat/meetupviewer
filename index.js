@@ -5,19 +5,20 @@ var ejs = require("ejs");
 require("datejs");
 var db = require("./models");
 var session = require("express-session");
-//var api = require("./api.js");
+
 var _ = require("underscore");
 var S = require('string');
 var Data = require("./data.js");
-var d1 = [], d2 = [],d3 = [];
+
 var app = express();
 var views = path.join(__dirname,"views");
 //app.set("view engine", "ejs");  
+
 data = new Data();
-
-
+var d1 = [], d2 = [],d3 = [];
 var use_real_data = process.env.USE_REAL_DATA || false;
 //pull in fresh data at server boot
+console.log("usd:"+use_real_data);
 if (use_real_data) {
 	data.getAll('',function(err,events,d1){
 		d3 = events;
