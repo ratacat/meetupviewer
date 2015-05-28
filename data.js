@@ -1,3 +1,4 @@
+var _ = require("lodash");
 var Data = function(){}
 
 Data.prototype.getAll = function(url, callback, eventsSoFar) {
@@ -40,8 +41,24 @@ Data.prototype.getAll = function(url, callback, eventsSoFar) {
     return str.slice(0, index) + (add || "") + str.slice(index + count);
   }
 
-  var newArr = [];
-  var weekdays = ["Sun","Mon","Tues","Wed","Thurs","Fri","Sat"];
+// console.log("before unique:"+oldEvent.length);
+   var newArr = [];
+//   var uniqueTitles = [];
+//   for (var i=0;i<oldEvent.length;i++){
+//     var k = oldEvent[i].name;
+//     console.log(uniqueTitles.indexOf(k) + "  " + k);
+//     if (uniqueTitles.indexOf(k) == -1) {
+//       uniqueTitles.push(oldEvent[i]);
+//     }
+//   }
+//   //console.log(uniqueTitles);
+//   console.log("after unique:"+uniqueTitles.length);
+//   oldEvent = uniqueTitles;
+  
+  var unique = _.uniq(oldEvent,'name');
+  oldEvent = unique;
+
+  var weekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   
   for (i=0;i<oldEvent.length;i++){
     var date = new Date(oldEvent[i].time);
@@ -50,18 +67,24 @@ Data.prototype.getAll = function(url, callback, eventsSoFar) {
     var seconds = "0" + date.getSeconds();
     var newEvent = {};
 
-    newEvent.title = oldEvent[i].name.length < 78 ? oldEvent[i].name : splice(oldEvent[i].name,75,75) + "..." ;
+    newEvent.title = (oldEvent[i].name.length < 78 ? oldEvent[i].name : splice(oldEvent[i].name,75,75) + "...").toLowerCase();
 
     newEvent.time = hours + ':' + minutes.substr(minutes.length-2) + ':' + seconds.substr(seconds.length-2);
     newEvent.time = date.toString("h:mm tt").toLowerCase();
+    newEvent.timestamp = oldEvent[i].time;
     newEvent.url = oldEvent[i].event_url;
     newEvent.city = oldEvent[i].hasOwnProperty("venue") ? oldEvent[i].venue.city : "----------";
+    newEvent.city = (newEvent.city.length < 15 ? newEvent.city : splice(newEvent.city,15,75)).toLowerCase();
     newEvent.groupId = oldEvent[i].group.id;
     newEvent.groupName = oldEvent[i].group.name;
-    newEvent.date = weekdays[date.getDay()] + " " + date.getDate();
+    newEvent.date = (weekdays[date.getDay()] + " " + date.getDate()).toLowerCase();
 
     newArr.push(newEvent);
   }
+
+  newArr.sort(function(a,b){
+    return a.timestamp - b.timestamp;
+  });
 
   return newArr;
 }
