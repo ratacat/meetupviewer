@@ -43,17 +43,6 @@ Data.prototype.getAll = function(url, callback, eventsSoFar) {
 
 // console.log("before unique:"+oldEvent.length);
    var newArr = [];
-//   var uniqueTitles = [];
-//   for (var i=0;i<oldEvent.length;i++){
-//     var k = oldEvent[i].name;
-//     console.log(uniqueTitles.indexOf(k) + "  " + k);
-//     if (uniqueTitles.indexOf(k) == -1) {
-//       uniqueTitles.push(oldEvent[i]);
-//     }
-//   }
-//   //console.log(uniqueTitles);
-//   console.log("after unique:"+uniqueTitles.length);
-//   oldEvent = uniqueTitles;
   
   var unique = _.uniq(oldEvent,'name');
   oldEvent = unique;

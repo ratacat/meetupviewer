@@ -1,25 +1,25 @@
-var express = require("express");
-var body = require ("body-parser");
-var path = require("path");
-var ejs = require("ejs");
+var express = require("express"), 
+	body = require ("body-parser"), 
+	path = require("path"),
+	ejs = require("ejs"),
+	db = require("./models"),
+	session = require("express-session"),
+	_ = require("underscore"),
+	S = require('string'),
+	Data = require("./data.js");
+
 require("datejs");
-var db = require("./models");
-var session = require("express-session");
-
-var _ = require("underscore");
-var S = require('string');
-var Data = require("./data.js");
-
 var app = express();
 var views = path.join(__dirname,"views");
 //app.set("view engine", "ejs");  
 
 data = new Data();
 var d1 = [], d2 = [],d3 = [];
-var use_real_data = process.env.USE_REAL_DATA || false;
-//pull in fresh data at server boot
-console.log("usd:"+use_real_data);
-if (use_real_data) {
+var useRealData = process.env.USE_REAL_DATA || false;
+//console.log("usd:"+useRealData);
+
+if (useRealData === true) {
+	//console.log(process.env.USE_REAL_DATA);
 	data.getAll('',function(err,events,d1){
 		d3 = events;
 		d2 = data.prepare(events);
