@@ -15,14 +15,18 @@ var views = path.join(__dirname,"views");
 //app.set("view engine", "ejs");  
 data = new Data();
 
-//pull in fresh data at server boot
-// data.getAll('',function(err,events,d1){
-// 	d3 = events;
-// 	d2 = data.prepare(events);
-// });
 
-//use disk data
-d2 = data.prepare(require("./data.json"));
+var use_real_data = process.env.USE_REAL_DATA || false;
+//pull in fresh data at server boot
+if (use_real_data) {
+	data.getAll('',function(err,events,d1){
+		d3 = events;
+		d2 = data.prepare(events);
+	});
+} else {
+	//use disk data
+	d2 = data.prepare(require("./data.json"));
+}
 
 // var REPL = require("repl");
 // var repl = REPL.start("api > ");
@@ -171,6 +175,8 @@ app.get("/events", function(req,res) {
 	}
 });
 
-app.listen(3000,function() {
+var port = process.env.PORT || 3000;
+
+app.listen(port,function() {
 	console.log('express is');
 })
