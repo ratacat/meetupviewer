@@ -7,6 +7,7 @@ var db = require("./models");
 var session = require("express-session");
 //var api = require("./api.js");
 var _ = require("underscore");
+var S = require('string');
 var Data = require("./data.js");
 var d1 = [], d2 = [],d3 = [];
 var app = express();
@@ -161,7 +162,13 @@ app.get("/follows", function(req,res) {
 });
 
 app.get("/events", function(req,res) {
-	res.send(d2);
+	var city = req.query.city
+	if (req.query.city) {  
+		res.send(_.filter(d2,function(event){
+			return S(event.city).contains(req.query.city)}));
+	} else {  
+		res.send(d2);
+	}
 });
 
 app.listen(3000,function() {
