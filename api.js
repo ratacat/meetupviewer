@@ -99,7 +99,7 @@ var base = "https://api.meetup.com/2/open_events.json";
 var zip = "94703";
 var time = "-1d,2d";
 var status = "upcoming";
-var key = "31725141c7d574a794053611745241f";
+var key = process.env.MEETUP_KEY;
 var radius = "3";
 var page = "500";
 
