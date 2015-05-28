@@ -8,10 +8,12 @@
     "express": "^4.12.4",
     "express-session": "^1.11.2",
     "jquery": "^2.1.4",
+    "lodash": "^3.9.3",
     "meetup-api": "^0.1.25",
     "mongodb": "^2.0.33",
     "mongoose": "^4.0.3",
     "request": "^2.55.0",
+    "string": "^3.1.1",
     "underscore": "^1.8.3"
   }
 }

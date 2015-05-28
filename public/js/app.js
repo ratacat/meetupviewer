@@ -17,12 +17,21 @@ function sendFollow(event) {
 	});
 }
 
+function sendCityFilter(cityObj) {
+	var string = $(cityObj).text();
+	$("#sort .filter").removeClass('loc_selected');
+	$(cityObj).parent().addClass('loc_selected');
+
+	render("eventTemplate","eventsContainer",string);
+}
+
 //renders all templates and appends them inside targetId element
-function render(templateId,targetId) {
+function render(templateId,targetId,city) {
 	var groups,followed;
+	var queryAddr = city ? "/events?city=" +encodeURIComponent(city) : "/events";
 
 	//get json and build template view
-    $.get('/events').done(function(events) {
+    $.get(queryAddr).done(function(events) {
     	$.get("/follows").done(function(groups) {
 	    	$("#" + targetId).html('');
 	        _.each(events,function(event,index,list) {
