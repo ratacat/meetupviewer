@@ -35,11 +35,46 @@ input {
 	border-radius:2px;
 }
 
+div#sort {
+	margin-left:200px;
+}
+
+div#sort .filter.loc_selected {
+	background-color:#b6d7ea;
+	border:1px solid #7c929e;
+	border-radius:2px;
+	color:#000;
+}
+
+div#sort .filter {
+	display:inline-block;
+	font-size:24px;
+	margin:5px;
+	padding:2px;
+	border:1px solid #E7E7E7;
+	border-radius:2px;
+	color:#919191;
+}
+
+div#sort .filter:hover {
+	background-color:#b6d7ea;
+	border:1px solid #7c929e;
+	border-radius:2px;
+	color:#000;
+}
+
+div#sort .filter span {
+	cursor:pointer;
+}
+
 div.event div {
 	display:inline-block;
 	margin:1px;
 }
 
+/*div.event .title {
+	text-transform:capitalize;
+}*/
 
 div.event .city {
 	width:110px;
