@@ -43,7 +43,7 @@ app.use(session({
 }));
 
 app.use ("/",function(req,res,next) {
-req.session.userId = "5563629ce53b73e15f2b51ba";
+//req.session.userId = "5563629ce53b73e15f2b51ba";
 
   req.login = function (user) {
     req.session.userId = user._id;
