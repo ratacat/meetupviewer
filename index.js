@@ -5,12 +5,27 @@ var ejs = require("ejs");
 require("datejs");
 var db = require("./models");
 var session = require("express-session");
-var api = require("./api.js");
+//var api = require("./api.js");
 var _ = require("underscore");
-
+var Data = require("./data.js");
+var d1 = [], d2 = [],d3 = [];
 var app = express();
 var views = path.join(__dirname,"views");
 //app.set("view engine", "ejs");  
+data = new Data();
+
+//pull in fresh data at server boot
+// data.getAll('',function(err,events,d1){
+// 	d3 = events;
+// 	d2 = data.prepare(events);
+// });
+
+//use disk data
+d2 = data.prepare(require("./data.json"));
+
+// var REPL = require("repl");
+// var repl = REPL.start("api > ");
+// repl.context.data = data;
 
 app.use(express.static(path.join(process.cwd(),'public')));
 app.use(express.static(path.join(process.cwd(),'bower_components')));
@@ -146,7 +161,7 @@ app.get("/follows", function(req,res) {
 });
 
 app.get("/events", function(req,res) {
-	res.send(api.data);
+	res.send(d2);
 });
 
 app.listen(3000,function() {
