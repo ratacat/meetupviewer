@@ -9,7 +9,7 @@ body {
 
 #eventsContainer {
 	background-color:#f2f2f2;
-	width:850px;
+	width:910px;
 	margin:0 auto;
 	padding:10px;
 	border: 1px solid #DDD;
@@ -40,8 +40,9 @@ div.event div {
 	margin:1px;
 }
 
+
 div.event .city {
-	width:70px;
+	width:110px;
 }
 
 div.event .date {
@@ -53,16 +54,31 @@ div.event .time {
 	text-align:center;
 }
 
+/*all of them*/
 div.event .follow {
 	border-radius:2px;
 	border: 1px solid #f2f2f2;
+	padding: 0px 2px 0px 1px;
 }
 
+/*not followed, not hovered*/
 div.event .follow:not(.followed) {
 	cursor:pointer;
+	visibility: hidden;
 }
 
+/*not followed, ON hover whole line!!*/
+div.event:hover .follow:not(.followed) {
+	background-color:#c6e8c2;
+	border-radius:2px;
+	border: 1px solid #54a84d;
+	visibility: visible;
+	opacity:.4;
+}
+
+/*followed*/
 div.event .followed {
+	content: "Followed";
 	background-color:#9be096;
 	border-radius:2px;
 	border: 1px solid #54a84d;
