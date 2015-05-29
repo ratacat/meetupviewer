@@ -13,12 +13,15 @@ var app = express();
 var views = path.join(__dirname,"views");
 //app.set("view engine", "ejs");  
 
-data = new Data();
+var data = new Data();
 var d1 = [], d2 = [],d3 = [];
 var useRealData = process.env.USE_REAL_DATA || false;
-//console.log("usd:"+useRealData);
+var devSession = process.env.DEVSESSION || false;
 
-if (useRealData === true) {
+
+
+if (useRealData) {
+	console.log("usd:"+useRealData);
 	//console.log(process.env.USE_REAL_DATA);
 	data.getAll('',function(err,events,d1){
 		d3 = events;
@@ -44,7 +47,11 @@ app.use(session({
 }));
 
 app.use ("/",function(req,res,next) {
-//req.session.userId = "5563629ce53b73e15f2b51ba";
+	console.log("req /");
+if (devSession && !req.session.userId ) {
+	console.log("Bypassing login for dev session");
+	req.session.userId = "5563629ce53b73e15f2b51ba";
+}
 
   req.login = function (user) {
     req.session.userId = user._id;
@@ -67,17 +74,7 @@ app.use ("/",function(req,res,next) {
     req.user = null;
   }
 
- //  if (!req.currentUser){
-	// 	res.redirect("/login");
-	// }
-
-	//console.log(JSON.stringify(req));
 	req.currentUser(function(err,user) {
-		//req.currentSessionUser = user;
-		//console.log
-		//console.log("currentUser:"+user);
-		//console.log("error:"+err);
-		//console.log("req.session:"+JSON.stringify(req.session));
 	});
 
 next();
@@ -152,7 +149,9 @@ app.get("/follows", function(req,res) {
 		//console.log("user:" + user);
 		if (user) {
 			db.User.getFollows(req.session.userId,function(err,follows) {
-				if (!err) {res.send(JSON.stringify(follows))
+				if (!err) {
+					follows = _.uniq(follows);
+					res.send(JSON.stringify(follows))
 				} else {
 					console.log(err);
 				}
@@ -167,13 +166,48 @@ app.get("/follows", function(req,res) {
 });
 
 app.get("/events", function(req,res) {
-	var city = req.query.city
+	console.log("POST /events received");
+	var city = req.query.city;
+	var follows = [];
+	var results = d2;
+	//console.log("req.query: "+ JSON.stringify(req.query));
+	//console.log("Number of starting results:"+results.length);
+
 	if (req.query.city) {  
-		res.send(_.filter(d2,function(event){
-			return S(event.city).contains(req.query.city)}));
-	} else {  
-		res.send(d2);
+		console.log("city query found");
+		results = _.filter(d2,function(event){
+			return S(event.city).contains(req.query.city);
+		});
+	} 
+
+	if (req.query.follows) {
+		console.log("follows query found");
+		if (req.session.userId) {
+			db.User.getFollows(req.session.userId,function(err,follows) {
+				if (!err) {
+					follows = _.uniq(follows);
+
+					//console.log("database found follows: "+follows);
+					//console.log("follows type: "+ typeof follows);
+					console.log("Number of results, pre follow:"+results.length);
+					results = _.filter(results,function(event){
+						return follows.indexOf(event.groupId.toString()) !== -1;});
+					console.log("Number of results: "+results.length);
+					res.send(results);
+				} else {
+					console.log(err);
+				}
+			});
+			// user.follow('',function(err,groups) {
+			// 		res.send(JSON.stringify(groups));
+		
+		}
+
 	}
+		
+	if (!req.query.follows) {
+		console.log("Number of final results" +results.length);
+		res.send(results);}
 });
 
 var port = process.env.PORT || 3000;
