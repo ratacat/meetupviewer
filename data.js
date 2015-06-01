@@ -1,12 +1,14 @@
 var _ = require("lodash");
+var request = require("request");
 var Data = function(){}
 
 Data.prototype.getAll = function(url, callback, eventsSoFar) {
-  url = url ? url : "https://api.meetup.com/2/open_events.json?zip=94703&city=berkeley&page=200&status=upcoming&time=-1d%2C4d&radius=25.0&key=" + process.env.MEETUP_KEY;
+  url = url ? url : "https://api.meetup.com/2/open_events.json?zip=94703&city=berkeley&page=200&status=upcoming&time=-1d%2C7d&radius=25.0&key=" + process.env.MEETUP_KEY;
   eventsSoFar = eventsSoFar || [];
   console.log('fetching... ' + url);
+  console.log('events found: '+ eventsSoFar.length);
   that = this;
-  require('request')(
+  request(
     url,
     function ( err, resp, body ) {
         body = JSON.parse(body);
@@ -15,20 +17,18 @@ Data.prototype.getAll = function(url, callback, eventsSoFar) {
       if ( err || body.error ) {
         callback( err || body.error );
       } else {
-      
-        if ( data.length > 0 ) {
-          // something was returned... keep on keepin on
+
+          // something was returned, suck up new data
           while ( next = data.pop() ) {
             eventsSoFar.push( next );
           }
-          if (!body.meta.next) {
-            callback( null, eventsSoFar );
-          } else {
-            that.getAll( body.meta.next, callback, eventsSoFar);
-          }
+      
+        //not on last request yet, call again
+        if ( body.meta.next ) {
+          that.getAll( body.meta.next, callback, eventsSoFar);
         } else {
-          // we're done! call the callback!
-          callback( NULL, eventsSoFar );
+          // no more next, we're done
+          callback( null, eventsSoFar );
         }
       }
     }
