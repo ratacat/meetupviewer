@@ -1,0 +1,19 @@
+{
+  "name": "bower install --save jquery",
+  "main": "index.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/vanessafarraye/meetupviewer",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.4",
+    "underscore": "~1.8.3"
+  }
+}

@@ -7,16 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>login</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 
 <body>
-    <form method="post" action="/login">
+    <form method="post" action="/login" class="loginForm">
         <div>
-            <label class ="signup">email</label>
+            <label class ="signup">Email</label>
             <input type="text" name="user[email]">
         </div>
         <div>
-            <label class="signup">password</label>
+            <label class="signup">Password</label>
             <input type="password" name="user[password]">
         </div>
         <button>Login</button>
