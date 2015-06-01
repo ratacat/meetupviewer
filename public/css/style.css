@@ -58,6 +58,33 @@ input {
 	cursor:pointer;
 }
 
+.signupButton {
+	display:block;
+	font-size:18px;
+	position:relative;
+	float:right;
+	padding:2px;
+	border:1px solid #E7E7E7;
+	border-radius:2px;
+}
+div#signup a.signupButton {
+	color:#919191;
+}
+
+.loginButton {
+	display:block;
+	clear:both;
+	font-size:18px;
+	position:relative;
+	float:right;
+	padding:2px;
+	border:1px solid #E7E7E7;
+	border-radius:2px;
+}
+div#login a.loginButton {
+	color:#919191;
+}
+
 #filters div.toggleFollow {
 	background-color:#9be096;
 	border-radius:2px;
@@ -153,4 +180,28 @@ div.event .followed {
 	background-color:#9be096;
 	border-radius:2px;
 	border: 1px solid #54a84d;
+}
+
+.signupForm {
+	margin: 60px 0px 0px 0px;
+	border: 3px solid black;
+	font-size:25px;
+	padding: 15px;
+	border-radius: 20px;
+	margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+	width: 40%;
+}
+
+.loginForm {
+	margin: 60px 0px 0px 0px;
+	border: 3px solid black;
+	font-size:25px;
+	padding: 15px;
+	border-radius: 20px;
+	margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+	width: 40%;
 }
